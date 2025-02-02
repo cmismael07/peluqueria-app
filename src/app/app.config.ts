@@ -1,11 +1,20 @@
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { TokenInterceptor } from './services/token.interceptor';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig = {
   providers: [
+    // Proporciona el cliente HTTP sin argumentos
+    provideHttpClient(),
+    // Registra el interceptor de forma independiente
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+    // Proporciona el router
     provideRouter(routes),
-    provideHttpClient(), provideAnimationsAsync()
+    // Agrega otros providers globales si es necesario
   ]
 };

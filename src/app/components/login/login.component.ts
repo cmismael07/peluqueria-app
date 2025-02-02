@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -76,7 +77,14 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+ // login.component.ts (fragmento)
+ngOnInit(): void {
+  this.loginForm = this.fb.group({
+    username: ['', { validators: [Validators.required] }],
+    password: ['', { validators: [Validators.required, Validators.minLength(6)] }]
+  });
+}
+
 
   onSubmit() {
     if (this.loginForm.invalid) return;
