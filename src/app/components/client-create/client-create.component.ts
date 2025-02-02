@@ -1,43 +1,81 @@
-// src/app/components/client-create/client-create.component.ts
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-client-create',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
   template: `
     <div class="container">
-      <h2>Nuevo Cliente</h2>
-      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
-        <label for="nombre">Nombre</label>
-        <input id="nombre" formControlName="nombre" type="text">
-        <label for="telefono">Teléfono</label>
-        <input id="telefono" formControlName="telefono" type="text">
-        <label for="email">Email</label>
-        <input id="email" formControlName="email" type="email">
-        <button type="submit">Crear Cliente</button>
-      </form>
+      <mat-card>
+        <mat-card-title>Nuevo Cliente</mat-card-title>
+        <mat-card-content>
+          <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Teléfono</mat-label>
+              <input matInput formControlName="telefono" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email">
+            </mat-form-field>
+            <div class="button-container">
+              <button mat-raised-button color="primary" type="submit">Crear Cliente</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
     </div>
   `,
   styles: [`
-    .container { padding: 20px; max-width: 500px; margin: auto; }
+    .container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    mat-card {
+      width: 500px;
+    }
+    .full-width {
+      width: 100%;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
   `]
 })
 export class ClientCreateComponent {
-  clientForm = this.fb.group({
-    nombre: [''],
-    telefono: [''],
-    email: ['']
-  });
+  clientForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    this.clientForm = this.fb.group({
+      nombre: [''],
+      telefono: [''],
+      email: ['']
+    });
+  }
 
   onSubmit() {
     const newClient = this.clientForm.value;

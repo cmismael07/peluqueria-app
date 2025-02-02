@@ -2,23 +2,38 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-atencion-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule],
   template: `
     <div class="container">
-      <h2>Listado de Atenciones</h2>
-      <ul>
-        <li *ngFor="let atencion of atenciones">
-          {{ atencion.descripcion }} - {{ atencion.fecha_atencion }}
-        </li>
-      </ul>
+      <h1>Listado de Atenciones</h1>
+      <div class="atencion-cards">
+        <mat-card *ngFor="let atencion of atenciones" class="atencion-card">
+          <mat-card-title>{{ atencion.descripcion }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ atencion.fecha_atencion | date: 'medium' }}
+          </mat-card-subtitle>
+        </mat-card>
+      </div>
     </div>
   `,
   styles: [`
-    .container { padding: 20px; }
+    .container {
+      padding: 20px;
+    }
+    .atencion-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .atencion-card {
+      width: 300px;
+    }
   `]
 })
 export class AtencionListComponent implements OnInit {
