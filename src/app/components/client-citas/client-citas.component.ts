@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ClientService, Cita } from '../../services/client.service';
+import { ClientService, Cita, Cliente } from '../../services/client.service';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
@@ -10,12 +10,14 @@ import { MatCardModule } from '@angular/material/card';
   imports: [CommonModule, MatCardModule],
   template: `
     <div class="container">
-      <h2>Citas del Cliente</h2>
+      <h2 *ngIf="cliente">Citas de {{ cliente.nombre }}</h2>
+      <h2 *ngIf="!cliente">Citas del Cliente</h2>
       <div *ngIf="citas && citas.length > 0; else noCitas">
         <mat-card *ngFor="let cita of citas" class="cita-card">
           <mat-card-title>{{ cita.fecha }} - {{ cita.hora }}</mat-card-title>
           <mat-card-content>
             <p>Estado: {{ cita.estado }}</p>
+            <!-- Puedes agregar más detalles según tus datos -->
           </mat-card-content>
         </mat-card>
       </div>
@@ -31,6 +33,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class ClientCitasComponent implements OnInit {
   citas: Cita[] = [];
+  cliente!: Cliente;
   clienteId!: number;
 
   constructor(
@@ -39,11 +42,19 @@ export class ClientCitasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obtén el id del cliente de la ruta
+    // Obtiene el parámetro 'cliente' de la URL (ejemplo: /clientes/5/citas)
     this.clienteId = Number(this.route.snapshot.paramMap.get('cliente'));
+
+    // Obtener las citas del cliente
     this.clientService.getCitasPorCliente(this.clienteId).subscribe({
       next: (data) => this.citas = data,
       error: (err) => console.error('Error al cargar citas', err)
+    });
+
+    // Obtener los datos del cliente
+    this.clientService.getClienteById(this.clienteId).subscribe({
+      next: (data) => this.cliente = data,
+      error: (err) => console.error('Error al cargar datos del cliente', err)
     });
   }
 }
