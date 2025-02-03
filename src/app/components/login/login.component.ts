@@ -1,25 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
-import { Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
-    HttpClientModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    CommonModule,
     MatButtonModule
   ],
   template: `
@@ -31,10 +30,19 @@ import { Validators } from '@angular/forms';
             <mat-form-field appearance="fill" class="full-width">
               <mat-label>Usuario</mat-label>
               <input matInput formControlName="username" type="text">
+              <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+                El usuario es obligatorio.
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" class="full-width">
               <mat-label>Contraseña</mat-label>
               <input matInput formControlName="password" type="password">
+              <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                La contraseña es obligatoria.
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+                La contraseña debe tener al menos 6 caracteres.
+              </mat-error>
             </mat-form-field>
             <div class="button-container">
               <button mat-raised-button color="primary" type="submit">Entrar</button>
@@ -64,42 +72,29 @@ import { Validators } from '@angular/forms';
   `]
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: [''],
-      password: ['']
+      username: ['', { validators: [Validators.required] }],
+      password: ['', { validators: [Validators.required, Validators.minLength(6)] }]
     });
   }
 
- // login.component.ts (fragmento)
-ngOnInit(): void {
-  this.loginForm = this.fb.group({
-    username: ['', { validators: [Validators.required] }],
-    password: ['', { validators: [Validators.required, Validators.minLength(6)] }]
-  });
-}
-
-
   onSubmit() {
-    if (this.loginForm.invalid) return;
-    
     const { username, password } = this.loginForm.value;
-    console.log('Formulario enviado:', this.loginForm.value);
-    
     this.auth.login(username, password).subscribe({
       next: (res) => {
-        console.log('Login exitoso:', res);
+        localStorage.setItem('token', res.token);
         this.router.navigate(['/clientes']);
       },
-      error: (err) => {
-        console.error('Error de autenticación:', err);
-      }
+      error: (err) => console.error('Error de autenticación', err)
     });
   }
 }

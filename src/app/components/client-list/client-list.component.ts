@@ -10,23 +10,30 @@ import { RouterLink, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule],
   template: `
-    <div class="container">
-      <h1>Listado de Clientes</h1>
-      <div class="client-cards">
-        <mat-card *ngFor="let cliente of clientes" class="client-card">
-          <mat-card-title>{{ cliente.nombre }}</mat-card-title>
-          <mat-card-content>
-            <p>Teléfono: {{ cliente.telefono }}</p>
-            <p>Email: {{ cliente.email }}</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="button-container">
+<div class="container">
+  <h1>Listado de Clientes</h1>
+  <div class="client-cards">
+    <mat-card *ngFor="let cliente of clientes" class="client-card">
+      <mat-card-title>{{ cliente.nombre }}</mat-card-title>
+      <mat-card-content>
+        <p>Teléfono: {{ cliente.telefono }}</p>
+        <p>Email: {{ cliente.email }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- Enlace para ver las citas del cliente -->
+        <button mat-button [routerLink]="['/clientes', cliente.id, 'citas']">
+          Ver Citas
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="button-container">
         <button mat-raised-button color="accent" routerLink="/clientes/nuevo">
           Agregar Nuevo Cliente
         </button>
-      </div>
-    </div>
+        </div>
+</div>
+
   `,
   styles: [`
     .container {
