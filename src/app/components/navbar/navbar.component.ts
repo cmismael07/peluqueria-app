@@ -11,14 +11,16 @@ import { CommonModule } from '@angular/common';  // Agrega esta línea
   standalone: true,
   imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule], // Agrega CommonModule aquí
   template: `
-    <mat-toolbar color="primary">
-      <span>Peluquería Anita</span>
-      <span class="spacer"></span>
-      <button mat-button routerLink="/clientes">Clientes</button>
-      <button mat-button routerLink="/citas/nuevo">Agendar Cita</button>
-      <button mat-button routerLink="/atenciones">Atenciones</button>
-      <button mat-button *ngIf="(isAuthenticated$ | async)" (click)="logout()">Salir</button>
-    </mat-toolbar>
+ <mat-toolbar color="primary">
+  <span>Peluquería Anita</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/clientes">Clientes</button>
+  <button mat-button routerLink="/citas/nuevo">Agendar Cita</button>
+  <button mat-button routerLink="/atenciones">Atenciones</button>
+  <!-- Agrega el botón para registrar una atención -->
+  <button mat-button routerLink="/atenciones/nuevo">Registrar Atención</button>
+  <button mat-button *ngIf="(isAuthenticated$ | async)" (click)="logout()">Salir</button>
+</mat-toolbar>
   `,
   styles: [`
     .spacer {

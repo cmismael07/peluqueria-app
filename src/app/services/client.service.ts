@@ -17,6 +17,21 @@ export interface Cita {
   estado: string;
   // Otros campos, si es necesario
 }
+export interface Atencion {
+  id: number;
+  cita_id: number;
+  descripcion: string;
+  fecha_atencion: string;
+  // La propiedad "cita" se define opcionalmente para reflejar la relación
+  cita?: {
+    cliente?: {
+      id: number;
+      nombre: string;
+      telefono: string;
+      email: string;
+    }
+  };
+}
 
 @Injectable({
   providedIn: 'root'

@@ -5,6 +5,7 @@ import { ClientCreateComponent } from './components/client-create/client-create.
 import { ClientCitasComponent } from './components/client-citas/client-citas.component';
 import { CitaCreateComponent } from './components/cita-create/cita-create.component';
 import { AtencionListComponent } from './components/atencion-list/atencion-list.component';
+import { AtencionCreateComponent } from './components/atencion-create/atencion-create.component';
 import { AuthGuard } from './services/auth.guard';
 
 export const routes: Routes = [
@@ -14,5 +15,7 @@ export const routes: Routes = [
   { path: 'clientes/nuevo', component: ClientCreateComponent, canActivate: [AuthGuard] },
   { path: 'clientes/:cliente/citas', component: ClientCitasComponent, canActivate: [AuthGuard] },
   { path: 'citas/nuevo', component: CitaCreateComponent, canActivate: [AuthGuard] },
-  { path: 'atenciones', component: AtencionListComponent, canActivate: [AuthGuard] }
+  { path: 'atenciones', component: AtencionListComponent, canActivate: [AuthGuard] },
+  // Agrega la ruta para registrar una nueva atención:
+  { path: 'atenciones/nuevo', component: AtencionCreateComponent, canActivate: [AuthGuard] }
 ];
