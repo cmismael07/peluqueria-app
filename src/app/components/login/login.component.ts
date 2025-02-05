@@ -24,7 +24,8 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="login-container">
       <mat-card>
-        <mat-card-title>Iniciar Sesión</mat-card-title>
+        <mat-card-title>Bienvenido a peluquería Anita!</mat-card-title>
+        <br>
         <mat-card-content>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="fill" class="full-width">
@@ -45,7 +46,7 @@ import { CommonModule } from '@angular/common';
               </mat-error>
             </mat-form-field>
             <div class="button-container">
-              <button mat-raised-button color="primary" type="submit">Entrar</button>
+              <button mat-raised-button color="primary" type="submit">Iniciar Sesión</button>
             </div>
           </form>
         </mat-card-content>
