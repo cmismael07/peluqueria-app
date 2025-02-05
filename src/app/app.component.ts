@@ -3,13 +3,14 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { LayoutComponent } from "./components/layout/layout.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, LayoutComponent],
   template: `
-  <app-navbar></app-navbar>
+  <app-layout></app-layout>
   <router-outlet></router-outlet>
   `,
 })
